@@ -21,7 +21,7 @@ change PASS to your own OAuth token
 * After installing python 3
 * Open shell of choice
 * Clone repository
-* Open cfg-example.py to change settings
+* Open cfg-blank.py to change settings
 
 ## Built With
 
