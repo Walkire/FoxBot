@@ -13,7 +13,7 @@ However, I do in the future wish to make this bot usable regardless of the user 
 * change PASS to your own OAuth token
 * Run Bot
 * open etc/mods.txt
-* list all channel mods with a new line
+* list all channel mods with a new line or use command !addmod
 
 ### Prerequisites
 

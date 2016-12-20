@@ -2,21 +2,26 @@
 
 import string
 from Socket import sendMessage, timeout
-from data import checkcooldown, roulette, openpoll, vote, closepoll, openraffle, raffle, closeraffle
+from data import checkcooldown, roulette, openpoll, vote, closepoll, openraffle, raffle, closeraffle, addMod
 from init import MODS
+from cfg import CHAN
 
 def command(user, message, s):
     print (user+ " used command: "+message)
     message = message[:-1]
     message = message.lower()
     
-    ##Poll Commands##
+    #Special commands
     temp = message.split(" ")
-    if temp[0] == "!openpoll" and user == "gimmethefox":
+    if temp[0] == "!addmod" and user is CHAN:
+        addMod(s, message)
+    
+    ##Poll Commands##
+    if temp[0] == "!openpoll" and user is CHAN:
         openpoll(s, message)
     if temp[0] == "!vote":
         vote(s, message, user)
-    if message == "!closepoll" and user == "gimmethefox":
+    if message == "!closepoll" and user is CHAN:
         closepoll(s)
     
     ##Raffle Commands##
@@ -48,6 +53,7 @@ def command(user, message, s):
             timeout(s,user,120)
             
     ##Endbot Command##
+    #USED FOR DEBUGGING
     if message == "!endbot" and user == "walkire":
         print("Ending bot")
         return -1

@@ -19,9 +19,19 @@ voterlist = []
 rafflelist = []
 
 #trigger[0] = poll
-#trigger[1] 
+#trigger[1] = raffle
 trigger = [False, False]
 
+def addMod(s, data):
+    messagelist = data.split(" ")
+    if len(messagelist) == 2:
+        f = open('etc/mods.txt', 'a')
+        f.write(messagelist[1]+'\n')
+        f.close()
+        MODS.append(messagelist[1])
+        sendMessage(s, "Added user "+messagelist[1]+" to mod list")
+    else:
+        sendMessage(s, "Invalid syntax, command is !addmod <name>, only provide one name")
 
 def openpoll(s, message):
     if trigger[0]:
@@ -85,7 +95,7 @@ def closeraffle(s):
         trigger[1] = False
     else:
         sendMessage(s, "No raffle currently open. Use command !openraffle to start")
-    
+   
 def checkcooldown(sec, listIndex, user):
     i = datetime.datetime.now()
     cTime = (i.hour * 3600) + (i.minute * 60) + i.second
