@@ -1,4 +1,4 @@
-# FoxBot v1.1
+# FoxBot v1.2
 
 Twitch chat mod bot using python and sockets
 
