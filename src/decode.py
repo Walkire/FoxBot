@@ -3,7 +3,7 @@
 import string
 from Socket import sendMessage, timeout
 from data import checkcooldown, roulette, openpoll, vote, closepoll, openraffle, raffle, closeraffle
-from cfg import MODS
+from init import MODS
 
 def command(user, message, s):
     print (user+ " used command: "+message)

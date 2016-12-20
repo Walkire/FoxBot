@@ -5,7 +5,7 @@ import time
 import datetime
 import random
 from Socket import sendMessage, timeout
-from cfg import MODS
+from init import MODS
 
 #cooldowns[0] = roulette
 #cooldowns[1] = auto twitter

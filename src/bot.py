@@ -1,13 +1,16 @@
 #bot.py
-import string
+import string, os
 import time
 from Socket import openSocket, Pong, sendMessage
-from init import joinRoom
+from init import joinRoom, ensure_dir, loadMods
 from decode import command
 from data import checkcooldown
+from cfg import NICK
 
 s = openSocket()
 joinRoom(s)
+ensure_dir("etc/")
+loadMods("etc/mods.txt")
 
 readbuffer = ""
 user = ""
@@ -45,7 +48,7 @@ while True:
         
     if chatamount == 30:
         if checkcooldown(1800, 1, "NULLUSER"):
-            end = command("foxbrobot", "!twitter\r", s)
+            end = command(NICK, "!twitter\r", s)
             chatamount = 0
     else:
         chatamount = chatamount + 1
