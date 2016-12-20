@@ -27,10 +27,20 @@ def timeout(s, user, secs):
     """
     Time out a user for a set period of time.
     Keyword arguments:
-    sock -- the socket over which to send the timeout command
+    s -- the socket over which to send the timeout command
     user -- the user to be timed out
     secs -- the length of the timeout in seconds (default 600)
     """
     secs = str(secs)
     sendMessage(s,".timeout "+user+" "+secs)
     print(user +" has been timed out for "+secs+" seconds")
+    
+def whisper(s, user, message):
+    """
+    whispers a user.
+    Keyword arguments:
+    s -- the socket over which to send the timeout command
+    user -- the user to be whispered to
+    message -- message that is sent to user
+    """
+    sendMessage(s, ".w "+user+" "+message)

@@ -1,10 +1,9 @@
 #decode.py
 
 import string
-from Socket import sendMessage, timeout
-from data import checkcooldown, roulette, openpoll, vote, closepoll, openraffle, raffle, closeraffle, addMod
-from init import MODS
-from cfg import CHAN
+from Socket import sendMessage, timeout, whisper
+from data import checkcooldown, roulette, openpoll, vote, closepoll, openraffle, raffle, closeraffle, addMod, help
+from cfg import CHAN, MODS, DATA
 
 def command(user, message, s):
     print (user+ " used command: "+message)
@@ -15,6 +14,8 @@ def command(user, message, s):
     temp = message.split(" ")
     if temp[0] == "!addmod" and user is CHAN:
         addMod(s, message)
+    if temp[0] == "!help":
+        help(s, message, user)
     
     ##Poll Commands##
     if temp[0] == "!openpoll" and user is CHAN:
@@ -39,11 +40,11 @@ def command(user, message, s):
     ###Text Commands###
     message = message.replace(" ","")
     if message == "!foxleft":
-        sendMessage(s, "fox when I said I would never leave you I thought it went both ways. I thought you wouldn't leave me either")
+        sendMessage(s, DATA['foxleft'])
     if message == "!rules":
-        sendMessage(s,"No discrimination, No racism, Be mindful of other chatters, No trolling and No spam. We are here to have fun!")
+        sendMessage(s, DATA['rules'])
     if message == "!twitter":
-        sendMessage(s, "Follow me on Twitter! @Gimmethefox https://twitter.com/Gimmethefox")
+        sendMessage(s, DATA['twitter'])
     if message == "!flip":
         sendMessage(s, "(╯°□°)╯︵ ┻━┻")
     if message == "!unflip":

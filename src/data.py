@@ -4,8 +4,8 @@ import string
 import time
 import datetime
 import random
-from Socket import sendMessage, timeout
-from init import MODS
+from Socket import sendMessage, timeout, whisper
+from cfg import MODS, CHAN, HELPLIST
 
 #cooldowns[0] = roulette
 #cooldowns[1] = auto twitter
@@ -21,6 +21,20 @@ rafflelist = []
 #trigger[0] = poll
 #trigger[1] = raffle
 trigger = [False, False]
+
+def help(s, message, user):
+    messagelist = message.split(" ")
+    temp = ""
+    
+    if len(messagelist) == 1:
+        for key in HELPLIST.keys():
+                temp+=str("!"+key+ " ")
+        whisper(s, user, "Use !help <command> to learn more -- "+temp)
+    if len(messagelist) > 1:
+        try:
+            whisper(s, user, HELPLIST[messagelist[1]])
+        except KeyError:
+            whisper(s, user, "Command does not exist, Usage: !help <command name>")
 
 def addMod(s, data):
     messagelist = data.split(" ")

@@ -2,9 +2,7 @@
 
 import string, os
 from Socket import sendMessage
-from cfg import NICK, CHAN
-
-MODS = []
+from cfg import NICK, CHAN, MODS
 
 def ensure_dir(f):
     d = os.path.dirname(f)
@@ -26,7 +24,7 @@ def loadMods(file):
         if line.endswith('\n'):
             line = line[:-1]
         MODS.append(line)
-    print("Mods found: ")
+    print("\nMods found: ")
     print(MODS)
     f.close()
 
