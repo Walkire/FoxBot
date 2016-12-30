@@ -5,6 +5,7 @@ NICK = # your Twitch username that will be the bot, lowercase
 PASS = # your Twitch OAuth token goes here
 CHAN = # the channel you want to join
 MODS = [] #leave empty
+RATE = (80/30) #Messages per second (20/30 for normal users / 100/30 for mods)
 
 """
 List of all possible commands for command !help
@@ -27,7 +28,7 @@ HELPLIST = {
 }
 
 """
-Other data usable by commands:
+All text commands here:
 twitter -- Put twitter URL and message here
 rules --  Put the channel rules here
 foxleft -- put whatever you want here, change the command name above and in decode.py
@@ -35,4 +36,4 @@ foxleft -- put whatever you want here, change the command name above and in deco
 DATA = {
 'twitter':'twitter message here',
 'rules':'rules message here',
-'foxleft':''}
+}

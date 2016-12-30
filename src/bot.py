@@ -5,7 +5,7 @@ from Socket import openSocket, Pong, sendMessage
 from init import joinRoom, ensure_dir, loadMods
 from decode import command
 from data import checkcooldown
-from cfg import NICK
+from cfg import NICK, RATE
 
 s = openSocket()
 joinRoom(s)
@@ -53,4 +53,4 @@ while True:
     else:
         chatamount = chatamount + 1
         
-    time.sleep(.1)
+    time.sleep(1/RATE)
