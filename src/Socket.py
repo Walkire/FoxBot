@@ -21,7 +21,7 @@ def sendMessage(s, message):
 
 def Pong(s):
         s.send(("PONG :tmi.twitch.tv\r\n").encode("utf-8"))
-        print("Sent PONG")
+        #print("Sent PONG")
 
 def timeout(s, user, secs):
     """

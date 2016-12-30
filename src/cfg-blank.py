@@ -10,7 +10,7 @@ RATE = (80/30) #Messages per second (20/30 for normal users / 100/30 for mods)
 """
 List of all possible commands for command !help
 CHANGING THESE DOES NOT ADD, CHANGE OR REMOVE COMMANDS
-See decode.py for command changes
+See decode.py for command changes or below for text command changes
 """
 HELPLIST = {
 'addmod': '(Host Only) !addmod <username> -- Adds user to bot mod list',
@@ -20,7 +20,6 @@ HELPLIST = {
 'closeraffle':'(Mods Only) !closeraffle -- closes current raffle and gives results',
 'vote':'!vote <option> -- allows you to vote for an option in the poll if one is currently open',
 'raffle':'!raffle -- allows you to place your name in the raffle if one is currently open',
-'foxleft':'!foxleft -- Use when fox leaves us :(',
 'rules':'!rules -- shows channel rules',
 'twitter':'!twitter -- shows channel twitter page url',
 'flip':'!flip -- flips the table',
@@ -29,11 +28,9 @@ HELPLIST = {
 
 """
 All text commands here:
-twitter -- Put twitter URL and message here
-rules --  Put the channel rules here
-foxleft -- put whatever you want here, change the command name above and in decode.py
+add as many as needed '!command':'message sent'
 """
 DATA = {
-'twitter':'twitter message here',
-'rules':'rules message here',
+'!twitter':'twitter message here',
+'!rules':'rules message here'
 }

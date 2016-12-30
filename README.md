@@ -1,4 +1,4 @@
-# FoxBot v1.2
+# FoxBot v1.2.1
 
 Twitch chat mod bot using python and sockets
 
@@ -15,7 +15,7 @@ However, I do in the future wish to make this bot usable regardless of the user 
 * Run bot.py then close
 * open etc/mods.txt
 * list all channel mods with a new line or use command !addmod
-* Add data to DATA list in cfg.py
+* Add data to DATA list in cfg.py as needed
 
 ### Prerequisites
 

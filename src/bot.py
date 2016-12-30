@@ -7,6 +7,7 @@ from decode import command
 from data import checkcooldown
 from cfg import NICK, RATE
 
+#Runs init functions for startup / creates socket
 s = openSocket()
 joinRoom(s)
 ensure_dir("etc/")
@@ -45,7 +46,7 @@ while True:
                         
     if end:
         break
-        
+    #If 30 messages and 30 minutes go by, run twitter command    
     if chatamount == 30:
         if checkcooldown(1800, 1, "NULLUSER"):
             end = command(NICK, "!twitter\r", s)
