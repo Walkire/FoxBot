@@ -5,8 +5,9 @@ import string
 import time
 import datetime
 import random
+from init import saveData
 from Socket import sendMessage, timeout, whisper
-from cfg import MODS, CHAN, HELPLIST
+import cfg
 
 #cooldowns[0] = roulette
 #cooldowns[1] = auto twitter
@@ -29,25 +30,35 @@ def help(s, message, user):
     temp = ""
     
     if len(messagelist) == 1:
-        for key in HELPLIST.keys():
+        for key in cfg.HELPLIST.keys():
                 temp+=str("!"+key+ " ")
         whisper(s, user, "Use !help <command> to learn more -- "+temp)
     if len(messagelist) > 1:
         try:
-            whisper(s, user, HELPLIST[messagelist[1]])
+            whisper(s, user, cfg.HELPLIST[messagelist[1]])
         except KeyError:
             whisper(s, user, "Command does not exist, Usage: !help <command name>")
 
-def addMod(s, data):
+def addMod(s, user, data):
     messagelist = data.split(" ")
     if len(messagelist) == 2:
-        f = open('etc/mods.txt', 'a')
-        f.write(messagelist[1]+'\n')
-        f.close()
-        MODS.append(messagelist[1])
-        sendMessage(s, "Added user "+messagelist[1]+" to mod list")
+        cfg.MODS.append(messagelist[1])
+        saveData("etc/mods.dat", cfg.MODS)
+        whisper(s, user, "Added user "+messagelist[1]+" to mod list")
     else:
-        sendMessage(s, "Invalid syntax, command is !addmod <name>, only provide one name")
+        whisper(s, "Invalid syntax, command is !addmod <name>, only provide one name")
+        
+def removeMod(s, user, data):
+    messagelist = data.split(" ")
+    if len(messagelist) == 2:
+        if messagelist[1] in cfg.MODS:
+            cfg.MODS.remove(messagelist[1])
+            saveData("etc/mods.dat", cfg.MODS)
+            whisper(s, user, "Removed user "+messagelist[1]+" from mod list")
+        else:
+            whisper(s, user, messagelist[1]+" does not exist in mod list")
+    else:
+        whisper(s, user, "Invalid syntax, command is !removemod <name>, only provide one name")
 
 def openpoll(s, message):
     if trigger[0]:
@@ -115,7 +126,7 @@ def closeraffle(s):
 def checkcooldown(sec, listIndex, user):
     i = datetime.datetime.now()
     cTime = (i.hour * 3600) + (i.minute * 60) + i.second
-    if user in MODS:
+    if user in cfg.MODS:
          return True
     if cooldowns[listIndex] == 0:
         cooldowns[listIndex] = cTime
@@ -133,7 +144,7 @@ def roulette(user, s):
     if num == 0:
         sendMessage(s, "The trigger is pulled, and the revolver clicks. "+user+" has lived to survive roulette!")
     else:
-        if user in MODS:
+        if user in cfg.MODS:
             sendMessage(s, "The trigger is pulled, but the revolver malfunctions! "+user+" has miraculously lived to survive roulette")
         else:
             sendMessage(s, "The trigger is pulled, and the revolver fires! "+user+" lies dead in chat")

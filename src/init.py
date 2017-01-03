@@ -1,33 +1,22 @@
 #init.py
 
-import string, os
+import string, os, pickle
 from Socket import sendMessage
-from cfg import NICK, CHAN, MODS
 
 def ensure_dir(f):
     d = os.path.dirname(f)
     if not os.path.exists(d):
         os.mkdir(d)
 
-def loadMods(file):
-	#Create file if it exists and preloads it with the
-	#bot name and host name
-    if not os.path.exists(file):
-        f = open(file, 'a')
-        f.write(NICK+'\n')
-        f.write(CHAN+'\n')
-        f.close()
-        print("Mods file made for the first time, check README for more info")
-		
-    f = open(file,'r')
-    for line in f:
-        if line.endswith('\n'):
-            line = line[:-1]
-        MODS.append(line)
-    print("\nMods found: ")
-    print(MODS)
-    f.close()
-
+def loadData(file):
+    try:
+        return pickle.load(open(file, 'rb'))
+    except FileNotFoundError:
+        print(file+" does not exist yet")
+    
+def saveData(file, data):
+    pickle.dump(data, open(file,'wb'))
+    
 def joinRoom(s):
     readbuffer = ""
     Loading = True

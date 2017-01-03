@@ -2,16 +2,20 @@
 import string, os
 import time
 from Socket import openSocket, Pong, sendMessage
-from init import joinRoom, ensure_dir, loadMods
+from init import joinRoom, ensure_dir, loadData, saveData
 from decode import command
 from data import checkcooldown
-from cfg import NICK, RATE
+import cfg
 
 #Runs init functions for startup / creates socket
 s = openSocket()
 joinRoom(s)
 ensure_dir("etc/")
-loadMods("etc/mods.txt")
+
+cfg.MODS = loadData("etc/mods.dat")
+if cfg.MODS is None:
+    cfg.MODS = [cfg.CHAN, cfg.NICK]
+print("Mods found:"+str(cfg.MODS))
 
 readbuffer = ""
 user = ""
@@ -45,7 +49,7 @@ while True:
                         #Optional timer for social auto
                         if chatamount == 30:
                             if checkcooldown(1800, 1, "NULLUSER"):
-                                end = command(NICK, "!twitter\r", s)
+                                end = command(cfg.NICK, "!twitter\r", s)
                                 chatamount = 0
                         else:
                             chatamount = chatamount + 1
@@ -53,4 +57,4 @@ while True:
                         
     if end:
         break
-    time.sleep(1/RATE)
+    time.sleep(1/cfg.RATE)
