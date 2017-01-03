@@ -36,22 +36,21 @@ while True:
     for line in temp:
                 #print(line)
                 if line == "PING :tmi.twitch.tv\r":
-                        chatamount = chatamount - 1
-                        Pong(s)
+                    Pong(s)
                 else:
                     message = getMessage(line)
                     if message[0] == '!':
                         user = getUser(line)
                         end = command(user, message, s)
+                        #Optional timer for social auto
+                        if chatamount == 30:
+                            if checkcooldown(1800, 1, "NULLUSER"):
+                                end = command(NICK, "!twitter\r", s)
+                                chatamount = 0
+                        else:
+                            chatamount = chatamount + 1
+                        
                         
     if end:
         break
-    #If 30 messages and 30 minutes go by, run twitter command    
-    if chatamount == 30:
-        if checkcooldown(1800, 1, "NULLUSER"):
-            end = command(NICK, "!twitter\r", s)
-            chatamount = 0
-    else:
-        chatamount = chatamount + 1
-        
     time.sleep(1/RATE)

@@ -34,7 +34,7 @@ def command(user, message, s):
         data.closeraffle(s)
     
     ##Roulette Commands##
-    if message == "!roulette" and checkcooldown(30,0, user):
+    if message == "!roulette" and data.checkcooldown(30,0, user):
         data.roulette(user, s)
     
     ###Text Commands (found in cfg.py)###

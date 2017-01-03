@@ -1,4 +1,5 @@
 #data.py
+#Contains functions for more complex commands
 
 import string
 import time
@@ -9,7 +10,8 @@ from cfg import MODS, CHAN, HELPLIST
 
 #cooldowns[0] = roulette
 #cooldowns[1] = auto twitter
-cooldowns = [0,0]
+#cooldowns[2] = text commands
+cooldowns = [0,0,0]
 
 #poll stuff
 poll = {}
@@ -127,18 +129,14 @@ def checkcooldown(sec, listIndex, user):
 def roulette(user, s):
     sendMessage(s, "places the revolver to "+user+"'s head")
     time.sleep(2.5)
-    if user == "dyxna":
-        sendMessage(s, "Oh hey "+user)
-        timeout(s, user, 30)
+    num = random.randint(0,1)
+    if num == 0:
+        sendMessage(s, "The trigger is pulled, and the revolver clicks. "+user+" has lived to survive roulette!")
     else:
-        num = random.randint(0,1)
-        if num == 0:
-           sendMessage(s, "The trigger is pulled, and the revolver clicks. "+user+" has lived to survive roulette!")
+        if user in MODS:
+            sendMessage(s, "The trigger is pulled, but the revolver malfunctions! "+user+" has miraculously lived to survive roulette")
         else:
-            if user in MODS:
-                sendMessage(s, "The trigger is pulled, but the revolver malfunctions! "+user+" has miraculously lived to survive roulette")
-            else:
-                sendMessage(s, "The trigger is pulled, and the revolver fires! "+user+" lies dead in chat")
-                timeout(s,user,30)
+            sendMessage(s, "The trigger is pulled, and the revolver fires! "+user+" lies dead in chat")
+            timeout(s,user,30)
         
     
