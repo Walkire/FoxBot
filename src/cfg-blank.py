@@ -14,6 +14,8 @@ See decode.py for command changes or below for text command changes
 """
 HELPLIST = {
 'addmod': '(Host Only) !addmod <username> -- Adds user to bot mod list',
+'mods':'(Host Only) !mods -- Shows list of current mods seen by bot',
+'removemod':'(Host Only) !removemod <username> -- Removes user from bot mod list',
 'openpoll':'(Host Only) !openpoll <option 1> <option 2> ... -- open a poll for users to vote for (needs at least 2 options) use !closepoll to end',
 'closepoll':'(Host Only) !closepoll -- closes current poll and gives results, opened by !openpoll',
 'openraffle':'(Mods Only) !openraffle -- starts a raffle',
