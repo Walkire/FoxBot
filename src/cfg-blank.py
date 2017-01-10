@@ -26,6 +26,8 @@ HELPLIST = {
 'twitter':'!twitter -- shows channel twitter page url',
 'flip':'!flip -- flips the table',
 'unflip':'!unflip -- unflips the table :(',
+'points':'!points -- Shows how many points you have',
+'bet':'!bet <number> -- Try your luck in a game of chance! (whole numbers only)'
 }
 
 """
@@ -34,5 +36,7 @@ add as many as needed '!command':'message sent'
 """
 DATA = {
 '!twitter':'twitter message here',
-'!rules':'rules message here'
+'!rules':'rules message here',
+'!flip':'(╯°□°)╯︵ ┻━┻',
+'!unflip':'┬─┬﻿ ノ( ゜-゜ノ)'
 }

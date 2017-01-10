@@ -9,9 +9,11 @@ from init import saveData
 from Socket import sendMessage, timeout, whisper
 import cfg
 
-#cooldowns[0] = roulette
-#cooldowns[1] = auto twitter
-#cooldowns[2] = text commands
+"""
+cooldowns[0] = roulette
+cooldowns[1] = auto twitter
+cooldowns[2] = text commands
+"""
 cooldowns = [0,0,0]
 
 #poll stuff
@@ -21,9 +23,48 @@ voterlist = []
 #raffle stuff
 rafflelist = []
 
-#trigger[0] = poll
-#trigger[1] = raffle
+#points stuff
+saveCounter = 0
+
+"""
+Tracks if event is in progress or not
+trigger[0] = poll
+trigger[1] = raffle
+"""
 trigger = [False, False]
+
+def generatePoint(user):
+    if user in cfg.POINTS:
+        cfg.POINTS[user] += 1
+    else:
+        cfg.POINTS[user] = 10
+    saveData("etc/points.dat", cfg.POINTS)
+    
+def betGame(s, user, message):
+    messagelist = message.split(" ")
+    if len(messagelist) == 2 and messagelist[1].isdigit():
+        bet = int(messagelist[1])
+        num = random.randint(1,100)
+        if bet > cfg.POINTS[user]:
+            sendMessage(s, user+" you are too broke to bet that much")
+        else:
+            cfg.POINTS[user] -= bet
+            if num < 51:
+                sendMessage(s, "Sorry, you lost it all "+user+" :(")
+            if num < 76 and num > 50:
+                sendMessage(s, "You won "+user+", but only broke even")
+                cfg.POINTS[user] += bet
+            if num < 100 and num > 75:
+                sendMessage(s, "You won double the amount you bet "+user+"!")
+                cfg.POINTS[user] += (bet*2)
+            if num == 100:
+                sendMessage(s, "Congrats "+user+", you won 3 times the amount you bet!")
+                cfg.POINTS[user] += (bet*3)
+            saveData("etc/points.dat", cfg.POINTS)
+    else:
+        whisper(s, user, "Invalid syntax, command is: "+cfg.HELPLIST['bet'])
+        
+                
 
 def help(s, message, user):
     messagelist = message.split(" ")
@@ -46,7 +87,7 @@ def addMod(s, user, data):
         saveData("etc/mods.dat", cfg.MODS)
         whisper(s, user, "Added user "+messagelist[1]+" to mod list")
     else:
-        whisper(s, "Invalid syntax, command is !addmod <name>, only provide one name")
+        whisper(s, "Invalid syntax, command is: "+cfg.HELPLIST['addmod'])
         
 def removeMod(s, user, data):
     messagelist = data.split(" ")
@@ -58,11 +99,11 @@ def removeMod(s, user, data):
         else:
             whisper(s, user, messagelist[1]+" does not exist in mod list")
     else:
-        whisper(s, user, "Invalid syntax, command is !removemod <name>, only provide one name")
+        whisper(s, user, "Invalid syntax, command is: "+cfg.HELPLIST['removemod'])
 
-def openpoll(s, message):
+def openpoll(s, message, user):
     if trigger[0]:
-        sendMessage(s, "A poll is already in progress")
+        whisper(s, user, "A poll is already in progress")
     else:
         messagelist = message.split(" ")
         if len(messagelist) > 2:
@@ -72,7 +113,7 @@ def openpoll(s, message):
                 poll[i] = 0;
             sendMessage(s, "Poll now open! Use the command !vote <option> to cast a vote")
         else:
-            sendMessage(s,"Need at least 2 options to vote from")
+            whisper(s, user, "Need at least 2 options to vote from")
 
 def vote(s, message, user):
     messagelist = message.split(" ")
@@ -81,10 +122,10 @@ def vote(s, message, user):
             poll[messagelist[1]] = poll[messagelist[1]] + 1
             voterlist.append(user)
         else:
-            sendMessage(s, user+" that is not a valid option")
+            whisper(s, user, "Invalid syntax, command is: "+cfg.HELPLIST['vote'])
         
 
-def closepoll(s):
+def closepoll(s, user):
     if trigger[0]:
         wonN = "Nothing"
         wonA = 0
@@ -97,11 +138,11 @@ def closepoll(s):
         voterlist.clear()
         poll.clear()
     else:
-        sendMessage(s, "No poll currently open. Use command !openpoll <arg1> <arg2>... to start a poll")
+        whisper(s, user, "Invalid syntax, command is: "+cfg.HELPLIST['closepoll'])
         
-def openraffle(s):
+def openraffle(s, user):
     if trigger[1]:
-        sendMessage(s,"A raffle is already in progress")
+        whisper(s, user, "A raffle is already in progress")
     else:
         sendMessage(s,"Raffle now open! Use command !raffle to place your name in")
         trigger[1] = True
@@ -110,7 +151,7 @@ def raffle(s, user):
     if trigger[1] and not user in rafflelist:
         rafflelist.append(user)
         
-def closeraffle(s):
+def closeraffle(s, user):
     if trigger[1]:
         sendMessage(s,"Raffle closed. Picking a name at random...")
         amount = len(rafflelist) - 1
@@ -121,7 +162,7 @@ def closeraffle(s):
         rafflelist.clear()
         trigger[1] = False
     else:
-        sendMessage(s, "No raffle currently open. Use command !openraffle to start")
+        whisper(s, user, "Invalid syntax, command is: "+cfg.HELPLIST['closeraffle'])
    
 def checkcooldown(sec, listIndex, user):
     i = datetime.datetime.now()
