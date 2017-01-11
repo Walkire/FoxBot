@@ -7,10 +7,10 @@ Twitch chat mod bot using python and sockets
 * Open cfg.py
 * change CHAN to the host channel username
 * change NICK to the bot username
-* change PASS to your own OAuth token
+* change PASS to your bots [OAUTH Token](https://twitchapps.com/tmi/)
 * change cfg-blank.py to cfg.py
 * Add data to DATA list in cfg.py as needed
-* Run bot.py then close
+* Run bot.py
 
 
 ### Prerequisites
