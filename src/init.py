@@ -1,21 +1,13 @@
 #init.py
 
 import string, os, pickle
-from Socket import sendMessage
 import cfg
 
 def initData():
-    ensure_dir("etc/")
-    #Load Mods data
-    cfg.MODS = loadData("etc/mods.dat")
-    if cfg.MODS is None:
-        cfg.MODS = [cfg.CHAN, cfg.NICK]
-        saveData("etc/mods.dat", cfg.MODS)
-    print("Mods found:"+str(cfg.MODS))
     #Load game data
     cfg.POINTS = loadData("etc/points.dat")
     if cfg.POINTS is None:
-        cfg.POINTS = {cfg.CHAN:'10'}
+        cfg.POINTS = {cfg.CHAN:10}
         saveData("etc/points.dat", cfg.POINTS)
     print("Points loaded")
 

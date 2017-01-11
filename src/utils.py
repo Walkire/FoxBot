@@ -1,18 +1,22 @@
-#socket.py
-import socket
-from cfg import HOST, PORT, PASS, NICK, CHAN
+#utils.py
+import socket, json
+from data import addPoints
+import urllib.request
+from init import saveData
+import cfg
+import time, _thread
 
 def openSocket():
     s = socket.socket()
-    s.connect((HOST, PORT))
-    s.send(("PASS " + PASS + "\r\n").encode('utf-8'))
-    s.send(("NICK " + NICK + "\r\n").encode('utf-8'))
-    s.send(("JOIN #" + CHAN + "\r\n").encode('utf-8'))
+    s.connect((cfg.HOST, cfg.PORT))
+    s.send(("PASS " + cfg.PASS + "\r\n").encode('utf-8'))
+    s.send(("NICK " + cfg.NICK + "\r\n").encode('utf-8'))
+    s.send(("JOIN #" + cfg.CHAN + "\r\n").encode('utf-8'))
     #s.send(("CAP REQ :twitch.tv/tags\r\n").encode('utf-8'))
     return s
 
 def sendMessage(s, message):
-        messageTemp = "PRIVMSG #" + CHAN + " :" + message
+        messageTemp = "PRIVMSG #" + cfg.CHAN + " :" + message
         s.send((messageTemp + "\r\n").encode('utf-8'))
         try:
                 print("Sent: " + messageTemp)
@@ -44,3 +48,24 @@ def whisper(s, user, message):
     message -- message that is sent to user
     """
     sendMessage(s, ".w "+user+" "+message)
+    
+def threadFillOpList():
+    while True:
+        try:
+            url = cfg.URL
+            req = urllib.request.Request(url)
+            response = urllib.request.urlopen(req)
+            cfg.MODS.clear()
+            str_response = response.read().decode('utf-8')
+            data = json.loads(str_response)
+            for p in data["chatters"]["moderators"]:
+                cfg.MODS.append(p)
+                addPoints(p, 1)
+            for p in data["chatters"]["viewers"]:
+                addPoints(p, 1)
+        except:
+            print("threadFillOpList error has occured...retrying")
+        time.sleep(5)
+        
+def isOP(user):
+    return user in cfg.MODS

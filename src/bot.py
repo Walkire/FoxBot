@@ -1,16 +1,18 @@
 #bot.py
 import string, os
-import time
-from Socket import openSocket, Pong, sendMessage
+import time, _thread
+import utils
 from init import joinRoom, initData
-from decode import command
-from data import checkcooldown, generatePoint
+from decode import command, bannedChat
+from data import checkcooldown
 import cfg
 
 #Runs init functions for startup / creates socket
-s = openSocket()
+s = utils.openSocket()
 joinRoom(s)
 initData()
+
+_thread.start_new_thread(utils.threadFillOpList, ())
 
 readbuffer = ""
 user = ""
@@ -36,18 +38,18 @@ while True:
     for line in temp:
                 #print(line)
                 if line == "PING :tmi.twitch.tv\r":
-                    Pong(s)
+                    utils.Pong(s)
                 else:
                     message = getMessage(line)
                     user = getUser(line)
-                    generatePoint(user)
+                    bannedChat(user, message, s)
                     if message[0] == '!':
                         end = command(user, message, s)
                         
                         #Optional timer for auto social message
                         if chatamount == 30:
                             if checkcooldown(1800, 1, "NULLUSER"):
-                                end = command(cfg.NICK, "!twitter\r", s)
+                                end = command(cfg.NICK, "!social\r", s)
                                 chatamount = 0
                         else:
                             chatamount = chatamount + 1
