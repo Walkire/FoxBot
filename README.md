@@ -2,9 +2,6 @@
 
 Twitch chat mod bot using python and sockets
 
-*note: This is a personal project for a friend and may or may not work for other twitch.tv channels.
-However, I do in the future wish to make this bot usable regardless of the user of this program
-
 ## How to use for the first time
 
 * Open cfg.py
@@ -12,9 +9,9 @@ However, I do in the future wish to make this bot usable regardless of the user 
 * change NICK to the bot username
 * change PASS to your own OAuth token
 * change cfg-blank.py to cfg.py
-* Run bot.py then close
-* Use command !addmod <name> to add all mods
 * Add data to DATA list in cfg.py as needed
+* Run bot.py then close
+
 
 ### Prerequisites
 
@@ -32,6 +29,7 @@ However, I do in the future wish to make this bot usable regardless of the user 
 ## Built With
 
 * [Python 3](https://www.python.org/download/releases/3.0/) - language used
+* [twitch.tv chatters](http://tmi.twitch.tv/group/user/chatters/chatters) - JSON used
 
 ## Authors
 
