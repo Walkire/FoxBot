@@ -12,7 +12,7 @@ import cfg
 """
 cooldowns[0] = roulette
 cooldowns[1] = auto twitter
-cooldowns[2] = text commands
+cooldowns[2] = bet command
 """
 cooldowns = [0,0,0]
 

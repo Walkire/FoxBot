@@ -3,7 +3,7 @@ import string, os
 import time, _thread
 import utils
 from init import joinRoom, initData
-from decode import command, bannedChat
+from decode import command, findURLs
 from data import checkcooldown
 import cfg
 
@@ -42,7 +42,7 @@ while True:
                 else:
                     message = getMessage(line)
                     user = getUser(line)
-                    bannedChat(user, message, s)
+                    findURLs(user, message, s)
                     if message[0] == '!':
                         end = command(user, message, s)
                         

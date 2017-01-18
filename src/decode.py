@@ -1,17 +1,20 @@
 #decode.py
 
-import string
+import string, re
 import utils
 from init import saveData
 import data
 import cfg
 
-def bannedChat (user, message, s):
+def findURLs (user, message, s):
     message = message[:-1]
     message = message.lower()
+
+    url = re.findall(cfg.URL_REGEX, message)
     
-    if ('www.' in message or '.com' in message) and not utils.isOP(user):
-        utils.timeout(s, user, 600)
+    if len(url) > 0 and not utils.isOP(user):
+        utils.timeout(s,user,1)
+    del url[:]
 
 def command(user, message, s):
     try:
@@ -51,13 +54,17 @@ def command(user, message, s):
     ##Points Commands##
     if message == "!points":
         utils.sendMessage(s, user+" has "+str(cfg.POINTS[user])+" points")
-    if temp[0] == "!bet":
+    if temp[0] == "!bet" and data.checkcooldown(15, 2, user):
         data.betGame(s, user, message)
+    if temp[0] == "!addPoints" and utils.isOP(user):
+        data.addPoints(temp[1],temp[2])
     
     ###Text Commands (found in cfg.py)###
     message = message.replace(" ","")
     if message in cfg.DATA:
         utils.sendMessage(s, cfg.DATA[message])
+        if message == "!social":
+            data.checkcooldown(1800, 1, "NULLUSER")
     if "unmodwalkire" in message or "unmodwa1kire" in message:
         if not utils.isOP(user):
             utils.timeout(s,user,120)
