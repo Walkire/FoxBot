@@ -27,7 +27,9 @@ HELPLIST = {
 'flip':'!flip -- flips the table',
 'unflip':'!unflip -- unflips the table :(',
 'points':'!points -- Shows how many points you have',
-'bet':'!bet <number> -- Try your luck in a game of chance! (whole numbers only)'
+'bet':'!bet <number> -- Try your luck in a game of chance! (whole numbers only)',
+'leaderboard':'!leaderboard -- Shows top 5 users with the highest points',
+'roulette':'!roulette -- take your chance in a game of roulette'
 }
 
 """

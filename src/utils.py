@@ -60,11 +60,12 @@ def threadFillOpList():
             data = json.loads(str_response)
             for p in data["chatters"]["moderators"]:
                 cfg.MODS.append(p)
-                addPoints(p, 1)
+                if not p == cfg.NICK:
+                    addPoints(p, 1)
             for p in data["chatters"]["viewers"]:
                 addPoints(p, 1)
         except:
-            print("threadFillOpList error has occured...retrying")
+            print()
         time.sleep(5)
         
 def isOP(user):

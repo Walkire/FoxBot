@@ -1,7 +1,7 @@
 #data.py
 #Contains functions for more complex commands
 
-import string
+import string, operator
 import time
 import datetime
 import random
@@ -13,8 +13,9 @@ import cfg
 cooldowns[0] = roulette
 cooldowns[1] = auto twitter
 cooldowns[2] = bet command
+cooldowns[3] = leader board
 """
-cooldowns = [0,0,0]
+cooldowns = [0,0,0,0]
 
 #poll stuff
 poll = {}
@@ -33,6 +34,21 @@ trigger[1] = raffle
 """
 trigger = [False, False]
 
+def leaderboard(s):
+    rank = 1
+    strTemp = ""
+    temp = dict(sorted(cfg.POINTS.items(), key=operator.itemgetter(1), reverse=True)[:5])
+    
+    while rank < 6:
+        person = max(temp.items(), key=operator.itemgetter(1))[0]
+        value = cfg.POINTS[person]
+        strTemp = strTemp + (str(rank)+") "+str(person)+": "+str(value)+" points. ")
+        del temp[person]
+        rank += 1
+        
+    utils.sendMessage(s, strTemp)
+        
+
 def addPoints(user, amount):
     if user in cfg.POINTS:
         cfg.POINTS[user] += amount
@@ -45,20 +61,24 @@ def betGame(s, user, message):
     if len(messagelist) == 2 and messagelist[1].isdigit():
         bet = int(messagelist[1])
         num = random.randint(1,100)
-        if bet > cfg.POINTS[user]:
-            utils.sendMessage(s, user+" you are too broke to bet that much")
+        if bet > cfg.POINTS[user] or bet == 0:
+            if bet == 0:
+                utils.sendMessage(s, "plz Kappa")
+            else:
+                utils.sendMessage(s, user+" you are too broke to bet that much.(Points: "+str(cfg.POINTS[user])+")")
         else:
             cfg.POINTS[user] -= bet
             if num < 51:
                 utils.sendMessage(s, "Sorry, you lost it all "+user+" :(")
             if num < 76 and num > 50:
-                utils.sendMessage(s, "You won "+user+", but only broke even")
-                cfg.POINTS[user] += bet
+                num2 = random.randint(1,(bet*2))
+                utils.sendMessage(s, "You won back "+str(num2)+" points "+user)
+                cfg.POINTS[user] += num2
             if num < 100 and num > 75:
                 utils.sendMessage(s, "You won double the amount you bet "+user+"!")
                 cfg.POINTS[user] += (bet*2)
             if num == 100:
-                utils.sendMessage(s, "Congrats "+user+", you won 3 times the amount you bet!")
+                utils.sendMessage(s, "Congrats "+user+", you won 3 times the amount you bet! PogChamp")
                 cfg.POINTS[user] += (bet*3)
             saveData("etc/points.dat", cfg.POINTS)
     else:

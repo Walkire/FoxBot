@@ -54,10 +54,16 @@ def command(user, message, s):
     ##Points Commands##
     if message == "!points":
         utils.sendMessage(s, user+" has "+str(cfg.POINTS[user])+" points")
-    if temp[0] == "!bet" and data.checkcooldown(15, 2, user):
+    if temp[0] == "!bet" and data.checkcooldown(10, 2, user):
         data.betGame(s, user, message)
-    if temp[0] == "!addPoints" and utils.isOP(user):
-        data.addPoints(temp[1],temp[2])
+    if temp[0] == "!addpoints" and user == cfg.CHAN:
+        print("***"+temp[2]+" points added to "+temp[1]+"***")
+        try:
+            data.addPoints(temp[1],int(temp[2]))
+        except:
+            print("Failed to add points")
+    if message == "!leaderboard" and data.checkcooldown(60, 3, user):
+        data.leaderboard(s)
     
     ###Text Commands (found in cfg.py)###
     message = message.replace(" ","")
